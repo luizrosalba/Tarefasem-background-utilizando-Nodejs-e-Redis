@@ -34,5 +34,11 @@ aplicação que está em execução. É por meio dele que o usuário pode modifi
 docker run --name redis -p 6379:6379 -d -t redis:alpine
 - Ele usou a imagem padrão do  Linux 687e7ed93cd5 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 Linux
 - agora pelo docker desktop eu tenho acesso a esta máquina virtual :D 
-- posso acompanhar os containers criados pelo comando : 
-docker ps
+posso acompanhar os containers criados pelo comando : 
+- docker ps
+
+ insatlei o yarn 
+- apk add yarn
+- yarn --version
+
+
