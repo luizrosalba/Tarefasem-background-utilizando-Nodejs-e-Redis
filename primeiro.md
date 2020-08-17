@@ -41,4 +41,73 @@ posso acompanhar os containers criados pelo comando :
 - apk add yarn
 - yarn --version
 
+- usar o Visual Studio Code com o container : 
+- adicionar a extensao do docker 
+- adicionar a extensão do remote container 
+- criar a paste : 
+- no VS F1 
+- remote containers : attach to running container 
+
+- está pronto para usar ! 
+
+- criei uma pasta em ~/.vscoder-server/teste2
+Instalei o yarn express nodemailer dotenv
+- yarn add express nodemailer dotenv
+Instalei o gitignore no container para subir o codigo para o git 
+- busquei o pacote gitignore , já me deu a opção de instalar no container e instalei com um clique 
+- abri a pasta teste2 
+
+- adicionei o git no container 
+RUN apk update && apk upgrade && apk add --no-cache bash git openssh
+- fui pra pasta teste2 e adicionei o controle git 
+- yarn add git 
+- Ele já atualizou as dependencias do projeto no json com o git 
+```Javascript
+{
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "git": "^0.1.5",
+    "nodemailer": "^6.4.11"
+  }
+}
+```
+- dentro da pasta2 git init 
+Initialized empty Git repository in /root/.vscode-server/teste2/.git/
+criei um arquivo .gitignore com a seguinte linha : node_modules
+- isso faz com que o git ignore os modulos do node na hora de fazer os meus commits
+- Adicionei o nodemon no projeto 
+yarn add nodemon sucrase -D
+-Criei o arquivo nodemon.json dentre de teste2 
+criei a pasta src e dentro dela coloquei servers.js 
+- import 'dotenv/config';
+dotenv permite usar variaveis de ambiente 
+- Criei o arquivo .env na pasta teste 2 e coloquei a o comando : PORT=8080
+.env é bom para usar com variaveis imutaveis como credeciasi de acesso , servidor etc... 
+- editei e meu server.js ficou assim : 
+```Javascript 
+
+import 'dotenv/config';
+import express from 'express'; 
+
+const app = express();
+
+app.arguments(express.json());
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on the ${process.env.PORT}`)
+});
+
+```
+
+const app = express();
+
+
+
+
+
+
+
+
+
 
