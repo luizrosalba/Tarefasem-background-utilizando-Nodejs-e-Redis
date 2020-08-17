@@ -86,21 +86,75 @@ dotenv permite usar variaveis de ambiente
 .env é bom para usar com variaveis imutaveis como credeciasi de acesso , servidor etc... 
 - editei e meu server.js ficou assim : 
 ```Javascript 
-
 import 'dotenv/config';
 import express from 'express'; 
 
 const app = express();
 
-app.arguments(express.json());
+app.use(express.json());
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on the ${process.env.PORT}`)
 });
+```
+e rodei no terminal para iniciallizar o servidor : 
+- yarn start
+- Obs : VAriaveis de ambiente são carregadas qquando o servidor sobre , qquer alteração nelas o servidor deve reiniciar 
 
+- dentro da pasta src eu criei a pasta app > controllers > UserController.js 
+- yard add password-generator 
+agora a senha vai ser gerada automaticamente (server.js) 
+```Javascript
+import passwordGenerator from 'password-generator';
+
+export default {
+     async store(req,res){
+        const { name , email   } = req.body ; 
+        const user = {
+            name, 
+            email, 
+            password : passwordGenerator(15,false)
+        };
+        return res.json(user);
+     }
+ }
+ ```
+ yard start
+ 
+ -criamos uma pasta lib dentro de app com o arquivo Mail.js 
+ ```Javascript 
+import nodemailer from 'nodemailer';
+
+export default nodemailer.createTransport({})
 ```
 
-const app = express();
+- Usamos o mailtrap.io para simular uma caixa de email 
+- https://mailtrap.io/inboxes
+- criamos a pasta config/mail.js 
+``` Usei minhas credenciais 
+var transport = nodemailer.createTransport({
+  host: "smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "---",
+    pass: "---"
+  }
+});
+```
+
+Não consegui enviar o email pois o meu container nao tem um servidor http , não consigo fazer o post que gera o usuario , a senha aleatória e manda o email. preciso instalar um servidor http para tanto. 
+
+ 
+- O professor então fala que uma fila em background poderia ajudar em situações onde muitos usuarios estivessem se cadastrando e nao recebendo o email por causa do await estar demorando muito 
+7min:30 parte 4 
+- Soulçaõ : criar uma fila 
+- criar o processo que cria a fila 
+- criamos o registrationmail.js dentro da pasta jobs 
+- 
+
+
+
+
 
 
 
