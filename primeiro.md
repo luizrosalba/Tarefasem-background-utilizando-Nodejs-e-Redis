@@ -126,22 +126,34 @@ export default {
  -criamos uma pasta lib dentro de app com o arquivo Mail.js 
  ```Javascript 
 import nodemailer from 'nodemailer';
+import mailConfig from '../config/mail';
 
-export default nodemailer.createTransport({})
+export default nodemailer.createTransport(mailConfig)
 ```
 
 - Usamos o mailtrap.io para simular uma caixa de email 
 - https://mailtrap.io/inboxes
 - criamos a pasta config/mail.js 
-``` Usei minhas credenciais 
-var transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: "---",
-    pass: "---"
-  }
-});
+
+```Javascript 
+export default{
+    host: process.env.MAIL_HOST, 
+    port: process.env.MAIL_PORT, 
+    auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+      }
+}
+```
+
+``` Usei minhas credenciais no .env para enviar o emal 
+PORT = 8080
+
+MAIL_HOST = smtp.mailtrap.io
+MAIL_PORT = 2525
+MAIL_USER= ---
+MAIL_PASS= ----
+
 ```
 
 <s>Não consegui enviar o email pois o meu container nao tem um servidor http , não consigo fazer o post que gera o usuario , a senha aleatória e manda o email. preciso instalar um servidor http para tanto. </s>
