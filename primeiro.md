@@ -262,6 +262,13 @@ export default{
     }
 }
 ```
+criamos um queue.js dentro de src para ouvir se há ou nao um processo na fila 
+```Javascript 
+///criamos outro arquivo para processar em threads diferentes a fila 
+import 'dotenv/config';
+import Queue from './app/lib/Queue';
+Queue.process();
+```
 
 
 
