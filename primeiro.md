@@ -269,9 +269,12 @@ import 'dotenv/config';
 import Queue from './app/lib/Queue';
 Queue.process();
 ```
-
-
-
+Adicionamos 
+``` embaixo do start no package.json 
+"queue": "nodemon src/queue.js"
+```
+- Sentry : https://sentry.io/
+- programa muito interessante que fica rodando dentro do servidor buscando exceções 
 
 
 
