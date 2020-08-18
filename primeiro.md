@@ -91,12 +91,16 @@ dotenv permite usar variaveis de ambiente
 import 'dotenv/config';
 import express from 'express'; 
 
+import UserController from './app/controllers/UserControllers'
 const app = express();
 
 app.use(express.json());
 
+app.post('/users',UserController.store);
+
 app.listen(process.env.PORT, () => {
     console.log(`Server running on the ${process.env.PORT}`)
+    
 });
 ```
 e rodei no terminal para iniciallizar o servidor : 
@@ -105,9 +109,10 @@ e rodei no terminal para iniciallizar o servidor :
 
 - dentro da pasta src eu criei a pasta app > controllers > UserController.js 
 - yard add password-generator 
-agora a senha vai ser gerada automaticamente (server.js) 
+agora a senha vai ser gerada automaticamente (server.js) . Editando o arquivo UserControllers.js 
 ```Javascript
 import passwordGenerator from 'password-generator';
+import Mail from '../lib/Mail'
 
 export default {
      async store(req,res){
@@ -117,11 +122,21 @@ export default {
             email, 
             password : passwordGenerator(15,false)
         };
+        
+        
+         await  Mail.sendMail({
+             from:'DIO <contato@batata.com.br>',
+             to: `${name}<${email}>`,
+             subject : "Cadastro de usuário",
+             html: `Olá, ${name}, bem vindo a DIO.`
+         })
+
+
         return res.json(user);
      }
  }
  ```
- yard start
+ -yarn start
  
  -criamos uma pasta lib dentro de app com o arquivo Mail.js 
  ```Javascript 
