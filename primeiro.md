@@ -262,6 +262,7 @@ export default{
     }
 }
 ```
+Adicionamos o bull 
 criamos um queue.js dentro de src para ouvir se há ou nao um processo na fila 
 ```Javascript 
 ///criamos outro arquivo para processar em threads diferentes a fila 
@@ -269,13 +270,37 @@ import 'dotenv/config';
 import Queue from './app/lib/Queue';
 Queue.process();
 ```
-Adicionamos 
+- Adicionamos o bull-board apk add bull-board para visualizar o servidor em 
+http://localhost:8080/admin/queues
+
+
 ``` embaixo do start no package.json 
 "queue": "nodemon src/queue.js"
 ```
 - Sentry : https://sentry.io/
 - programa muito interessante que fica rodando dentro do servidor buscando exceções 
+e nosso server.js ficou assim 
+```Javascript
+import 'dotenv/config';
+import express from 'express'; 
+import BullBoard from 'bull-board';
 
+import UserController from './app/controllers/UserControllers'
+import Queue from './app/lib/Queue'
+
+const app = express();
+BullBoard.setQueues(Queue.queues.map(queue=>queue.bull));/// para cada fila , adiconar no bull 
+
+
+app.use(express.json());
+app.use('/admin/queues',BullBoard.UI);///adicionando o bull em uma rota
+
+app.post('/users',UserController.store);
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on the ${process.env.PORT}`)
+});
+```
 
 
 
