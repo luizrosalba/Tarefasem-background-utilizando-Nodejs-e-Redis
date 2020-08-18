@@ -33,7 +33,7 @@ aplicação que está em execução. É por meio dele que o usuário pode modifi
 - Para o Labs vou precisar do redis , para criar este container executei : 
 docker run --name redis -p 6379:6379 -d -t redis:alpine
 - Pelo amor do deus divino , quando for criar o container, crie com acesso a porta 80. para mudar isso depois é um inferno !! 
-
+- eu criei um arquivo explicando como adicionar o acesso a essa porta neste mesmo repositorio do github 
 - Ele usou a imagem padrão do  Linux 687e7ed93cd5 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 Linux
 - agora pelo docker desktop eu tenho acesso a esta máquina virtual :D 
 posso acompanhar os containers criados pelo comando : 
@@ -144,7 +144,10 @@ var transport = nodemailer.createTransport({
 });
 ```
 
-Não consegui enviar o email pois o meu container nao tem um servidor http , não consigo fazer o post que gera o usuario , a senha aleatória e manda o email. preciso instalar um servidor http para tanto. 
+<s>Não consegui enviar o email pois o meu container nao tem um servidor http , não consigo fazer o post que gera o usuario , a senha aleatória e manda o email. preciso instalar um servidor http para tanto. </s>
+- não precisei de nada disso. o nodemon já inicia o servidor n porta 8080 com o nodejs com as configurações realizadas no arquivo server.js Consegui fazer o post usando o postman desta forma : 
+
+![](https://github.com/luizrosalba/Tarefasem-background-utilizando-Nodejs-e-Redis/blob/master/Capturar.PNG?raw=true)
 
  
 - O professor então fala que uma fila em background poderia ajudar em situações onde muitos usuarios estivessem se cadastrando e nao recebendo o email por causa do await estar demorando muito 
