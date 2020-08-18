@@ -178,13 +178,90 @@ MAIL_PASS= ----
 
  
 - O professor então fala que uma fila em background poderia ajudar em situações onde muitos usuarios estivessem se cadastrando e nao recebendo o email por causa do await estar demorando muito 
-7min:30 parte 4 
-- Soulçaõ : criar uma fila 
+
+- Solução : criar uma fila de processamento em background 
 - criar o processo que cria a fila 
 - criamos o registrationmail.js dentro da pasta jobs 
-- 
+- Eu coloquei o pc em modo suspender e deu problema ao reiniciar. Quando reiniciou o docker nao queria abrir os containers por causa do ISS do WIndows. Desativei e funcionou 
 
+- Bull Ferramenta encontrada no github para gerenciamento de filas 
+- tinha uma kue mas parou de ser utilizada (sempre ficar de olho na ultima data do commit) 
 
+- criamos o arquivo RegistrationMAil dentro de uma pasta jobs 
+```Javascript
+import Mail from '../lib/Mail'
+
+export default {
+    key : 'RegistrationMail',
+    options: {
+        delay:5000,
+        priority:3
+    },
+
+    async handle({data}){ ///desestruturacao evita data.data
+        const {user} = data; 
+
+        await  Mail.sendMail({
+            from:'DIO <contato@batata.com.br>',
+            to: `${user.name}<${user.email}>`,
+            subject : "Cadastro de usuário",
+            html: `Olá, ${user.name}, bem vindo a DIO.`
+        })
+    }
+}
+``` 
+- E removemos o await do Mail.js
+- criamos um arquivo redis.js dentro da pasta config 
+```Javascript 
+export default { 
+    host: process.env.REDIS_HOST, 
+    port: process.env.REDIS_PORT, 
+
+}
+```
+e no arquivo .env adicionar 
+REDIS_HOST = 127.0.0.1
+REDIS_PORT = 6379
+
+- Dentro da pasta lib criamos o Queue.js 
+- adicionamos o bull 
+- yarn add bull 
+- percebi que coloquei o config dentro da pasta app  , deveria estar fora , depois corrijo isso 
+- criamos um index.js dentro de jobs com a linha 
+```
+export {default as RegistrationMail} from './RegistrationMail';
+```
+Adicionamos um arquivo Queue.js dentro de lib 
+```Javascript
+import Queue from 'bull'; 
+import redisConfig from '../config/redis';
+
+import * as jobs from '../jobs';
+
+const queues = Object.values(jobs).map(job=> ({
+    bull: new Queue (job.key,redisConfig),
+    name: job.key,
+    handle:job.handle,
+    options: job.options,
+}))
+
+export default{
+    queues, 
+    add(name,data){
+        const queue = this.queues.find(queue=>queue.name===name); /// validação so adicioan se a fila existe 
+        return queue.bull.add(data,queue.options); /// adiciona o job na fila 
+    },
+    process(){
+        return this.queues.forEach(queue => {
+            queue.bull.process(queue.handle);
+            queue.bull.on('failed',(job,err) => {
+                console.log('Job failed' , queue.key,job.data);
+                console.log(err);
+            });
+        })
+    }
+}
+```
 
 
 
