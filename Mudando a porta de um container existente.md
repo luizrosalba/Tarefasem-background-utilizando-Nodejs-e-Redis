@@ -28,10 +28,10 @@ Right click Docker Desktop tray icon and click Restart.
 In Docker Desktop's list of containers, look at your container. Displayed port should chang to 8092.
 Start your container. Now it will be mapped to port 8092 on host.
 ```
-Para adicionar portas ex 6379
+Para adicionar portas ex 6379 no arquivo /var/lib/containers/nome_container/hostconfig.json
 
 ```
-em "exposed ports" 
-depois do {}
-,"6379/tcp":{}}
+Bindings 
+depois do []
+,"3000/tcp":[{"HostIp":"","HostPort":"80"}]
 ``` 
