@@ -1,4 +1,5 @@
 Mudando a porta de um container existente 
+```
 # list all containers
 $ docker ps -a
 $ docker stop docker101tutorial 
@@ -17,11 +18,20 @@ $ grep -rl fff0a4b22d /var/lib/docker/containers/
 /var/lib/docker/containers/c1eda20b30f058bce9f8ece3b47a21641df5b399770e12ab57416a954d3c8bbf/config.v2.json
 # So it is c1eda20b30f058bce9f8ece3b47a21641df5b399770e12ab57416a954d3c8bbf directory. Let's change HostPort:
 $ vi /var/lib/docker/containers/c1eda20b30f058bce9f8ece3b47a21641df5b399770e12ab57416a954d3c8bbf/hostconfig.json
-
+```
 Press i for insert mode.
+```
 Change "HostPort":"80" to "HostPort":"8092"
 Press Escape and write :wq. Press Enter.
 Do not start/stop docker101tutorial now. Otherwise changes to HostPort will be reverted.
 Right click Docker Desktop tray icon and click Restart.
 In Docker Desktop's list of containers, look at your container. Displayed port should chang to 8092.
 Start your container. Now it will be mapped to port 8092 on host.
+```
+Para adicionar portas ex 6379
+
+```
+em "exposed ports" 
+depois do {}
+,"6379/tcp":{}}
+``` 
